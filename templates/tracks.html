@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <title>My Top 10 Tracks</title>
+</head>
+    <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Number of tracks to display
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/top_ten">Top 10 (default)</a>
+    <a class="dropdown-item" href="/top_twenty">Top 20</a>
+    <a class="dropdown-item" href="/top_fifty">Top 50</a>
+  </div>
+</div>
+<div class="row">
+    {% for track in tracks %}
+        <div class="col-3">
+            <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{track.get('album').get('images')[0].get('url')}}">
+          <div class="card-body">
+            <h5 class="card-title">{{track.get('name')}}</h5>
+            <p class="card-text">Album: {{track.get('album').get('name')}}</p>
+              <p class="card-text">Artist: {{track.get('artists')[0].get('name')}}</p>
+          </div>
+        </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <title>Get Album Tracks</title>
+</head>
+
+<body>
+    <form method="POST">
+        <p>Enter an album name:</p>
+        <input name="text">
+        <input type="submit">
+    </form>
+    <img src="{{album_img_url}}"
+        width="300"
+        height="auto"/>
+    {% for track in list_of_tracks %}
+      <p>{{ track }}</p>
+    {% endfor %}
+</body>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <title>My Top 10 Artists</title>
+</head>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Number of artists to display
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/artists_top_five">Top 5</a>
+    <a class="dropdown-item" href="/artists">Top 10 (default)</a>
+    <a class="dropdown-item" href="/artists_top_twenty">Top 20</a>
+  </div>
+</div>
+
+<div class="row">
+    {% for artist in artists %}
+        <div class="col-3">
+            <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{artist.get('images')[0].get('url')}}">
+          <div class="card-body">
+            <h5 class="card-title">{{artist.get('name')}}</h5>
+            <p class="card-text">Number of Followers: {{artist.get('followers').get('total')}}</p>
+          </div>
+        </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
