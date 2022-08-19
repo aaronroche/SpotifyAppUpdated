@@ -8,7 +8,7 @@ class MySqlConnection(object):
             password='hotdog4567',
             host='localhost',
             port='3306',
-            database='spotifyapp'
+            database='svapp1'
         )
 
     def query(self, query, args):

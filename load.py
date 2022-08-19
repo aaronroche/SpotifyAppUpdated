@@ -6,7 +6,7 @@ spotify_db = mysql.connector.connect(
             password='hotdog4567',
             host='localhost',
             port='3306',
-            database='spotifyapp'
+            database='svapp1'
         )
 
 cursor = spotify_db.cursor()

@@ -10,7 +10,6 @@ from mysql_connection import MySqlConnection
 from random import randint
 from libraries.send_email import EmailClient
 
-
 minimum = 100000
 maximum = 999999
 
@@ -26,7 +25,7 @@ os.environ['SPOTIPY_REDIRECT_URI'] = 'http://localhost:8888/callback'
 dbconn = MySqlConnection()
 
 def add_track_to_db(name, img, artist, album):
-    query = """INSERT IGNORE INTO tracks(name, img_url, artist_name, album_name)
+    query = """INSERT IGNORE INTO tracks(singer_name, img_url, artist_name, album_name)
                 VALUES(%(name)s, %(img)s, %(artist)s, %(album)s);"""
 
     args = {
@@ -42,7 +41,7 @@ spotify_db = mysql.connector.connect(
             password='hotdog4567',
             host='localhost',
             port='3306',
-            database='spotifyapp'
+            database='svapp1'
         )
 
 def get_tracks_from_db():
@@ -53,33 +52,30 @@ def get_tracks_from_db():
 
 # def in_database():
 
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
+# @app.route('/', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         email = request.form['email']
+#
+#         sql = "INSERT INTO loginfo (username, password, email_id, verification) VALUES (%(username)s, %(password)s, %(email_id)s, %(verification)s)"
+#
+#         verification = randint(minimum, maximum)
+#
+#         args = {
+#             'username': username,
+#             'password': password,
+#             'email_id': email,
+#             'verification': verification
+#         }
+#         dbconn.query(sql, args)
+#         EmailClient.send_email(email, 'aaron.roche4567@gmail.com', 'Sign Up Verification', 'Hi there, your code is: %s'%verification)
+#         return redirect(url_for('top_ten'))
+#     return render_template('login.html')
 
-        sql = "INSERT INTO loginfo (username, password, email_id, verification) VALUES (%(username)s, %(password)s, %(email_id)s, %(verification)s)"
 
-        verification = randint(minimum, maximum)
-
-        args = {
-            'username': username,
-            'password': password,
-            'email_id': email,
-            'verification': verification
-        }
-        dbconn.query(sql, args)
-        EmailClient.send_email(email, 'aaron.roche4567@gmail.com', 'Sign Up Verification', 'Hi there, your code is: %s'%verification)
-        return redirect(url_for('top_ten'))
-    return render_template('login.html')
-
-@app.route('/welcome')
-def welcome():
-    return render_template('welcome.html')
-
-@app.route('/top_ten')
+@app.route('/')
 def top_ten():
     scope = "user-top-read"
 
@@ -170,15 +166,21 @@ def my_form_post():
     for i in track_names:
         list_of_tracks.append(i['name'])
 
-    conn = sqlite3.connect('spotifyapp.db')
+    conn = sqlite3.connect('svapp1')
     c = conn.cursor()
-    id_num = 'select max (album_id) + 1 from Album'
-    c.execute('INSERT INTO Album VALUES (?, ?)', [c.lastrowid, album_name])
-    #c.execute('INSERT INTO tracks VALUES (?, ?)', [c.lastrowid + 1, i])
 
-    conn.commit()
-    c.close()
-    conn.close()
+    id_num = 'select max (album_id) + 1 from album2'
+    query = """INSERT INTO album2 (first_g, second_g) VALUES (%(first_g)s, %(second_g)s);"""
+
+    args = {
+        'first_g': c.lastrowid,
+        'second_g': album_name
+    }
+    dbconn.query(query, args)
+
+
+
+
 
     return render_template('albums.html', list_of_tracks=list_of_tracks, album_img_url=album_img_url)
 
